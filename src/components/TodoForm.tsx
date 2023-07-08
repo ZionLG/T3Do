@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-
+import { api } from "../utils/api";
 const TodoForm = () => {
   const session = useSession();
   if (session.status !== "authenticated") return;
@@ -11,9 +11,9 @@ const TodoForm = () => {
 const Form = () => {
   const session = useSession();
   const [inputValue, setInputValue] = useState("");
+  const utils = api.useContext();
 
-  const createtTodo = {};
-
+  const createtTodo = api.todo.addTodo.useMutation({});
   if (session.status !== "authenticated") return null;
 
   function handleSubmit(e: React.FormEvent) {
@@ -25,17 +25,17 @@ const Form = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 border-b px-4 py-2"
+      className=" flex w-full justify-center gap-2 px-4 py-2"
     >
-      <div className="flex gap-4">
-        <input
-          style={{ height: 0 }}
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          className="flex-grow resize-none overflow-hidden rounded-md p-4 text-lg outline-none"
-        />
-      </div>
-      <button className="text-white">Send</button>
+      <input
+        style={{ height: 0 }}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        className="max-w-3xl flex-grow resize-none overflow-hidden  rounded-md bg-gradient-to-b from-[#500ead] to-[#0e147c]  
+           px-5 py-6 text-lg text-[#c6afe6] outline-none"
+        placeholder="What do you have planned?"
+      />
+      <button className="font-bold text-white">Add task</button>
     </form>
   );
 };

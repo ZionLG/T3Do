@@ -19,13 +19,13 @@ model Example {
 }
 
 model Todo {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    dueTo     DateTime
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    dueTo     DateTime?
     title     String
     desc      String?
-    priority  Priority @default(LOW)
-    done      Boolean  @default(false)
+    priority  Priority  @default(LOW)
+    done      Boolean   @default(false)
 }
 
 enum Priority {
