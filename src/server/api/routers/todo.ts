@@ -9,11 +9,17 @@ export const todoRouter = createTRPCRouter({
   addTodo: protectedProcedure
     .input(z.object({ todo: z.string() }))
     .mutation(async ({ input: { todo }, ctx }) => {
-      const newTodo = await ctx.prisma.todo.create({ data: { title: todo } });
+      const userId = ctx.session.user.id;
+      const newTodo = await ctx.prisma.todo.create({
+        data: { title: todo, userId },
+      });
       return newTodo;
     }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.todo.findMany();
+  userList: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.todo.findMany({
+      where: { userId: ctx.session.user.id },
+      orderBy: { createdAt: "desc" },
+    });
   }),
 });

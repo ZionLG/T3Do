@@ -1,12 +1,9 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import TodoForm from "~/components/TodoForm";
-import { api } from "~/utils/api";
+import TodoList from "~/components/TodoList";
 
 export default function Home() {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
@@ -23,6 +20,7 @@ export default function Home() {
             </p>
           </div>
           <TodoForm />
+          <TodoList />
           <div className="flex flex-col items-center gap-2">
             <AuthShowcase />
           </div>

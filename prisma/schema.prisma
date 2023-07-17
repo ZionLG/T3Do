@@ -20,6 +20,7 @@ model Example {
 
 model Todo {
     id        String    @id @default(cuid())
+    userId    String
     createdAt DateTime  @default(now())
     dueTo     DateTime?
     title     String
