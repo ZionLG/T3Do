@@ -18,6 +18,24 @@ model Example {
     updatedAt DateTime @updatedAt
 }
 
+model Todo {
+    id        String    @id @default(cuid())
+    userId    String
+    createdAt DateTime  @default(now())
+    dueTo     DateTime?
+    title     String
+    desc      String?
+    priority  Priority  @default(LOW)
+    done      Boolean   @default(false)
+}
+
+enum Priority {
+    LOW
+    MEDIUM
+    HIGH
+    URGENT
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
