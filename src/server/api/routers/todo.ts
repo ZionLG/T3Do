@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const todoRouter = createTRPCRouter({
   create: protectedProcedure
@@ -43,4 +39,11 @@ export const todoRouter = createTRPCRouter({
 
       return updatedTodo;
     }),
+  clearCompleted: protectedProcedure.mutation(async ({ ctx }) => {
+    const updatedTodo = await ctx.prisma.todo.deleteMany({
+      where: { done: true, userId: ctx.session.user.id },
+    });
+
+    return updatedTodo;
+  }),
 });
