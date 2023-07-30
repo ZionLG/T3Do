@@ -9,12 +9,6 @@ type TodoCardProps = {
 const TodoCard = ({ todo }: TodoCardProps) => {
   const utils = api.useContext();
 
-  //   const { mutate, isLoading } = api.todo.changeDoneStatus.useMutation({
-  //     onSuccess: () => {
-  //       void utils.todo.userList.invalidate();
-  //     },
-  //   });
-
   const { mutate: mutateStatus } = api.todo.changeDoneStatus.useMutation({
     async onMutate(newState) {
       // Cancel outgoing fetches (so they don't overwrite our optimistic update)
