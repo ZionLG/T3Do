@@ -11,7 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header
-        className={`bg-[url(/bg-mobile-dark.jpg)] bg-cover  bg-no-repeat px-6 pb-11 pt-12 md:bg-[url(/bg-desktop-dark.jpg)] `}
+        className={`bg-[url(/bg-mobile-dark.jpg)] bg-cover  bg-no-repeat px-6 pb-11 pt-12 sm:bg-[url(/bg-desktop-dark.jpg)] `}
       >
         <div className="mx-auto flex max-w-xl  flex-wrap items-center justify-between">
           <div className="mb-10">
