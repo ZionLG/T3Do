@@ -9,11 +9,33 @@ const TodoList = () => {
 
   return <List />;
 };
+
+type todoFilter = "all" | "active" | "completed";
+
 const List = () => {
   const getTodos = api.todo.userList.useQuery();
   const [todosLeft, setTodosLeft] = useState(0);
+  const [filter, setFilter] = useState<todoFilter>("all");
+  const [filteredTodos, setFilteredTodos] = useState(
+    [] as typeof getTodos.data
+  );
   const utils = api.useContext();
 
+  useEffect(() => {
+    if (getTodos.data) {
+      switch (filter) {
+        case "all":
+          setFilteredTodos(getTodos.data);
+          break;
+        case "active":
+          setFilteredTodos(getTodos.data.filter((t) => !t.done));
+          break;
+        case "completed":
+          setFilteredTodos(getTodos.data.filter((t) => t.done));
+          break;
+      }
+    }
+  }, [filter, getTodos.data]);
   useEffect(() => {
     if (getTodos.data) {
       setTodosLeft(getTodos.data.filter((t) => !t.done).length);
@@ -55,16 +77,25 @@ const List = () => {
   return (
     <div>
       <ul className="rounded-t-md bg-[#25273C] ">
-        {getTodos.data?.map((todo) => (
+        {filteredTodos?.map((todo) => (
           <TodoCard todo={todo} key={todo.id} />
         ))}
       </ul>
       <div className="flex justify-between rounded-b-md bg-[#25273C] p-3 text-sm text-[#4D5066]">
         <div>{todosLeft} items left</div>
         <div className="flex gap-5">
-          <span>All</span>
-          <span>Active</span>
-          <span>Completed</span>
+          <span className="cursor-pointer" onClick={() => setFilter("all")}>
+            All
+          </span>
+          <span className="cursor-pointer" onClick={() => setFilter("active")}>
+            Active
+          </span>
+          <span
+            className="cursor-pointer"
+            onClick={() => setFilter("completed")}
+          >
+            Completed
+          </span>
         </div>
         <div className="cursor-pointer" onClick={() => mutateClearCompleted()}>
           Clear Completed
