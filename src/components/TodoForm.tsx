@@ -24,6 +24,7 @@ const Form = () => {
   } = useForm<TodoInput>();
   const utils = api.useContext();
 
+  // Without optimistic updates
   // const { mutate, isLoading } = api.todo.create.useMutation({
   //   onSuccess: () => {
   //     resetField("title");
@@ -31,6 +32,7 @@ const Form = () => {
   //   },
   // });
 
+  // With optimistic updates
   const { mutate, isLoading } = api.todo.create.useMutation({
     async onMutate(newTodo) {
       resetField("title");
@@ -68,6 +70,7 @@ const Form = () => {
   if (session.status !== "authenticated") return null;
   const onSubmit: SubmitHandler<TodoInput> = (data) => {
     try {
+      if (isLoading) return;
       mutate({ title: data.title });
     } catch (cause) {
       console.error({ cause }, "Failed to add post");
@@ -77,25 +80,20 @@ const Form = () => {
   return (
     <form
       onSubmit={(event) => void handleSubmit(onSubmit)(event)}
-      className=" flex w-full justify-center gap-2 px-4 py-2"
+      className="relative block w-full before:absolute before:start-5 before:top-5 before:box-border before:block before:h-6  before:w-6 before:rounded-[50%] before:border before:border-[#393A4C]"
     >
       <input
         style={{ height: 0 }}
         {...register("title", { required: true })}
         id="title"
-        className="max-w-3xl flex-grow resize-none overflow-hidden  rounded-md bg-gradient-to-b from-[#5a5a5a] to-[#2c2c2c]  
-           px-5 py-6 text-lg text-[#c6afe6] outline-none"
-        placeholder="What do you have planned?"
+        className="min-h-[3rem] w-full resize-none overflow-hidden rounded-md border-none border-[#c6afe6] bg-[#25273C] py-8 pl-16 pr-5 text-lg text-[#CACDE8]
+           outline-8 placeholder:text-[#777A92] "
+        placeholder="Create a new todo..."
       />
-      {errors.title && <span>This field is required</span>}
 
-      <button
-        disabled={isLoading}
-        type="submit"
-        className="font-bold text-white"
-      >
-        Add task
-      </button>
+      {errors.title && (
+        <span className="text-red-300">This field is required</span>
+      )}
     </form>
   );
 };
