@@ -74,6 +74,35 @@ const List = () => {
       void utils.todo.userList.invalidate();
     },
   });
+
+  const filterHtml = (
+    <>
+      <span
+        className={`cursor-pointer ${
+          filter === "all" ? "text-[#3A7BFD]" : " hover:text-[#CACDE8]"
+        }`}
+        onClick={() => setFilter("all")}
+      >
+        All
+      </span>
+      <span
+        className={`cursor-pointer ${
+          filter === "active" ? "text-[#3A7BFD]" : " hover:text-[#CACDE8]"
+        }`}
+        onClick={() => setFilter("active")}
+      >
+        Active
+      </span>
+      <span
+        className={`cursor-pointer ${
+          filter === "completed" ? "text-[#3A7BFD]" : " hover:text-[#CACDE8]"
+        }`}
+        onClick={() => setFilter("completed")}
+      >
+        Completed
+      </span>
+    </>
+  );
   return (
     <div>
       <ul className="rounded-t-md bg-[#25273C] ">
@@ -81,25 +110,18 @@ const List = () => {
           <TodoCard todo={todo} key={todo.id} />
         ))}
       </ul>
-      <div className="flex justify-between rounded-b-md bg-[#25273C] p-3 text-sm text-[#4D5066]">
+      <div className=" flex justify-between rounded-b-md bg-[#25273C] p-3 text-lg text-[#4D5066] sm:text-sm">
         <div>{todosLeft} items left</div>
-        <div className="flex gap-5">
-          <span className="cursor-pointer" onClick={() => setFilter("all")}>
-            All
-          </span>
-          <span className="cursor-pointer" onClick={() => setFilter("active")}>
-            Active
-          </span>
-          <span
-            className="cursor-pointer"
-            onClick={() => setFilter("completed")}
-          >
-            Completed
-          </span>
-        </div>
-        <div className="cursor-pointer" onClick={() => mutateClearCompleted()}>
+        <div className="hidden gap-5 sm:flex">{filterHtml}</div>
+        <div
+          className={`cursor-pointer text-lg hover:text-[#CACDE8] sm:text-sm`}
+          onClick={() => mutateClearCompleted()}
+        >
           Clear Completed
         </div>
+      </div>
+      <div className="mt-5 flex justify-center gap-5 rounded-md bg-[#25273C] p-3 text-lg font-bold text-[#4D5066] sm:hidden">
+        {filterHtml}
       </div>
     </div>
   );
